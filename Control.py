@@ -1,5 +1,5 @@
 import random
-from numpy import argmax
+import numpy
 import jnius_config
 jnius_config.set_classpath('C:\\Users\\conta\\eclipse-workspace/BehaviourGraphs.jar')
 from jnius import autoclass
@@ -44,73 +44,36 @@ def cluster(k, D, sizeA, following):
     rand = random.seed()
     returnClusters = []
 
+    # print("Test (4,40): ", constrained_sum_sample_pos(4,40))
+    # print("Test (7, 100): ", constrained_sum_sample_pos(7,100))
+
+
     # Initialise the set of optimal clusters by randomising each transition matrix
+    rangeGap = 0.0001
+    sum_sample = constrainedSumSampleNonneg(16, 1.0, rangeGap)
+    print("Test (16, 1.0): ", sum_sample)
+    sumOfTest = 0.0
+    for c in sum_sample:
+        sumOfTest = sumOfTest + c
+    print("Sum of test: ", sumOfTest)
     for i in range(0, k):
         matrix = [
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()]]
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap),
+            constrainedSumSampleNonneg(16, 1.0, rangeGap)]
 
         returnClusters.append(matrix)
 
@@ -158,7 +121,7 @@ def cluster(k, D, sizeA, following):
                     product = product * returnClusters[Z[zi]][D[i][j]][D[i][j - 1]]
                 products.append(product)
             #print(products)
-            Z[i] = argmax(products)
+            Z[i] = numpy.argmax(products)
             new = Z[i]
             if initial != new:
                 change = 1
@@ -178,9 +141,10 @@ def cluster(k, D, sizeA, following):
             for i in range(0, sizeA):
                 for j in range(0, sizeA):
                     divisor = sumCountTransitions(sequences[z], sizeA, j, following)
-                    if divisor == 0:
+                    '''if divisor == 0:
                         returnClusters[z][i][j] = 0.0
-                    else:
+                    else:'''
+                    if divisor != 0:
                         returnClusters[z][i][j] = countTransitions(sequences[z], i, j, following) / divisor
                     '''sum = 0
                     for x in range(1, sizeA):
@@ -196,6 +160,20 @@ def cluster(k, D, sizeA, following):
             print("[", returnClusters[i][j], "]")
         print("]\n\n\n\n")
 
+
+def constrainedSumSamplePos(n, total, rangeGap):
+    """Return a randomly chosen list of n positive integers summing to total.
+    Each such list is equally likely to occur."""
+    numpyRange = numpy.arange(0.0, total, rangeGap)
+    range = numpy.ndarray.tolist(numpyRange)
+    dividers = sorted(random.sample(range, n - 1))
+    return [a - b for a, b in zip(dividers + [total], [0.0] + dividers)]
+
+def constrainedSumSampleNonneg(n, total, rangeGap):
+    """Return a randomly chosen list of n nonnegative integers summing to total.
+    Each such list is equally likely to occur."""
+
+    return [x - rangeGap for x in constrainedSumSamplePos(n, total + (n * rangeGap), rangeGap)]
 
 def countTransitions(sequences, i, j, following):
     # sequences is a list of all sequences assigned to the current cluster.
