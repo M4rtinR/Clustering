@@ -1,7 +1,8 @@
 import random
 import numpy
 import jnius_config
-jnius_config.set_classpath('C:\\Users\\conta\\eclipse-workspace/BehaviourGraphs.jar')
+import copy
+jnius_config.set_classpath('C:\\Users\\conta\\eclipse-workspace/BehaviourGraphsRunnable.jar')
 from jnius import autoclass
 
 def main():
@@ -14,7 +15,8 @@ def main():
     sizeA = len(A)  # Size of the action space
     k = 8  # Number of clusters
     clusters = cluster(k, D, sizeA, following)  # The set of clusters
-
+    displayGraphs(clusters)
+    input("Press Enter to continue...")
 
 def getActionSequences():
     # Do something with Java here
@@ -32,11 +34,11 @@ def getFollowing():
     print("getting following behaviours")
     PythonHelper = autoclass('behaviour_graphs.PythonHelper')
     ph = PythonHelper()
-    testFollowing = ph.getFollowing()
+    '''testFollowing = ph.getFollowing()
     print(testFollowing)
     print(testFollowing[0])
     print(testFollowing[0][0])
-    print(testFollowing[0][0][1])
+    print(testFollowing[0][0][1])'''
     return ph.getFollowing()
 
 
@@ -51,11 +53,11 @@ def cluster(k, D, sizeA, following):
     # Initialise the set of optimal clusters by randomising each transition matrix
     rangeGap = 0.0001
     sum_sample = constrainedSumSampleNonneg(16, 1.0, rangeGap)
-    print("Test (16, 1.0): ", sum_sample)
+    # print("Test (16, 1.0): ", sum_sample)
     sumOfTest = 0.0
     for c in sum_sample:
         sumOfTest = sumOfTest + c
-    print("Sum of test: ", sumOfTest)
+    # print("Sum of test: ", sumOfTest)
 
     '''PythonHelper = autoclass('behaviour_graphs.PythonHelper')
     ph = PythonHelper()
@@ -206,12 +208,12 @@ def cluster(k, D, sizeA, following):
     print(len(returnClusters))
     print(len(returnClusters[0]))
     print(len(returnClusters[0][0]))'''
-    for i in range(0,k):
+    '''for i in range(0,k):
         print("cluster", i)
         print("[", end = '')
         for j in range(0,16):
             print("[", returnClusters[i][j], "]")
-        print("]\n\n\n\n")
+        print("]\n\n\n\n")'''
 
     # Initialise sequence assignments Z = z1 ... zn
     Z = []
@@ -220,39 +222,62 @@ def cluster(k, D, sizeA, following):
 
     change = 1
     count = 1
+    Echange = 0
+
+    previousE = Z.copy()
+    previousM = copy.deepcopy(returnClusters)
+
     # Repeat until Z converges to stable assignments
     while change == 1:
         change = 0
-        # E step - compute assignments for each sequence zi
-        print("E step ", count)
-        for i in range(0, len(Z)):
-            initial = Z[i]
-            l = len(D[i])
-            products = []
+        echange = 0
+        mchange = 0
 
-            for zi in range(0, k):
-                product = 1
-                for j in range(2, l):
-                    '''print("i: ", i)
-                    print("zi: ", zi)
-                    print("j: ", j)
-                    print("D[i][j]: ", D[i][j])
-                    print("D[i][j-1]: ", D[i][j-1])
-                    print("Z[zi]: ", Z[zi])
-                    print("returnClusters[Z[zi]]: ", returnClusters[Z[zi]])
-                    print("size: ", len(returnClusters[Z[zi]]))
-                    print("returnClusters[Z[zi]][D[i][j]]: ", returnClusters[Z[zi]][D[i][j]])
-                    print("returnClusters")'''
-                    product = product * returnClusters[zi][D[i][j]][D[i][j - 1]]
-                products.append(product)
-            #print(products)
-            Z[i] = numpy.argmax(products)
-            #print(Z[i])
-            new = Z[i]
-            if initial != new:
-                change = 1
+        if Echange == 0:
+            # E step - compute assignments for each sequence zi
+            tempE = Z.copy()
+            print("E step ", count)
+            for i in range(0, len(Z)):
+                initial = Z[i]
+                l = len(D[i])
+                products = []
 
-        print("Z: ", Z)
+                for zi in range(0, k):
+                    product = 1
+                    for j in range(2, l):
+                        '''print("i: ", i)
+                        print("zi: ", zi)
+                        print("j: ", j)
+                        print("D[i][j]: ", D[i][j])
+                        print("D[i][j-1]: ", D[i][j-1])
+                        print("Z[zi]: ", Z[zi])
+                        print("returnClusters[Z[zi]]: ", returnClusters[Z[zi]])
+                        print("size: ", len(returnClusters[Z[zi]]))
+                        print("returnClusters[Z[zi]][D[i][j]]: ", returnClusters[Z[zi]][D[i][j]])
+                        print("returnClusters")'''
+                        product = product * returnClusters[zi][D[i][j]][D[i][j - 1]]
+                    products.append(product)
+                #print(products)
+                Z[i] = numpy.argmax(products)
+                #print(Z[i])
+                new = Z[i]
+                previous = previousE[i]
+
+                # Check for convergence
+                if count == 1:
+                    if initial != new:
+                        # print("1st round E step changes happening")
+                        echange = 1
+                else:
+                    if initial != new and new != previous:
+                        # print("E step changes happening")
+                        echange = 1
+
+            previousE = tempE
+            print("Z: ", Z)
+
+        if echange == 0:
+            Echange = 1
 
         # Make a list of all sequences by cluster
         sequences = []
@@ -263,34 +288,61 @@ def cluster(k, D, sizeA, following):
                 if Z[i] == z:
                     sequences[z].append(i)
 
+        tempM = copy.deepcopy(returnClusters)
         # M step - Update each transition matrix
         print("M step ", count)
         for z in range(0, k):
             for i in range(0, sizeA):
                 for j in range(0, sizeA):
-                    initial = returnClusters([z][i][j])
+                    initial = returnClusters[z][i][j]
+                    # print("returnClusters[", z, "][", i, "][", j, "] = ", returnClusters[z][i][j], ", previousM[", z, "][", i, "][", j, "] = ", previousM[z][i][j])
                     divisor = sumCountTransitions(sequences[z], sizeA, j, following)
                     if divisor == 0 and len(sequences[z]) > 2 and returnClusters[z][i][j] != 0.0:
-                        #print("Setting returnClusters[", z, "][", i, "][", j, "] to 0.")
+                        # print("Setting returnClusters[", z, "][", i, "][", j, "] to 0.")
                         returnClusters[z][i][j] = 0.0
                         '''returnClusters[z][i][j] - 0.01
                         if returnClusters[z][i][j] < 0.0:
                             returnClusters[z][i][j] = 0.0'''
                     elif divisor != 0:
+                        # print("Change")
                         returnClusters[z][i][j] = countTransitions(sequences[z], i, j, following) / divisor
                     '''sum = 0
                     for x in range(1, sizeA):
                         sum = sum + following[x][j]
                     returnClusters[z][i][j] = following[i][j] / sum'''
+                    # print("returnClusters[", z, "][", i, "][", j, "] = ", returnClusters[z][i][j], ", previousM[", z,
+                          # "][", i, "][", j, "] = ", previousM[z][i][j])
+                    final = returnClusters[z][i][j]
+                    difference = initial - final
+                    previous = previousM[z][i][j]
+
+                    # Check for convergence
+                    if count == 1:
+                        if difference < -0.01 or difference > 0.01:
+                            # print("1st round M step changes happening in returnClusters[", z, "][", i, "][", j, "]: changed from ", initial, " to ", final)
+                            mchange = 1
+                    else:
+                        # print("in else, difference = ", difference, ", final = ", final, ", previous = ", previous)
+                        if (difference < -0.01 or difference > 0.01) and final != previous:
+                            # print("M step changes happening in returnClusters[", z, "][", i, "][", j, "]: changed from ", initial, " to ", final)
+                            mchange = 1
+        previousM = tempM
+
+        if not((Echange == 1 and mchange == 0) or (mchange == 0 and count > 50)):
+            change = 1
 
         count = count + 1
 
+    # Display results
+    print("Z: ", Z)
     for i in range(0,k):
         print("cluster", i)
         print("[", end = '')
         for j in range(0,16):
             print("[", returnClusters[i][j], "]")
         print("]\n\n\n\n")
+
+    return returnClusters
 
 
 def constrainedSumSamplePos(n, total, rangeGap):
@@ -323,6 +375,12 @@ def sumCountTransitions(sequences, size, j, following):
     for x in range(0, size):
         sum = sum + countTransitions(sequences, x, j, following)
     return sum
+
+
+def displayGraphs(clusters):
+    PythonHelper = autoclass('behaviour_graphs.PythonHelper')
+    ph = PythonHelper()
+    ph.createGraph(clusters)
 
 
 if __name__ == '__main__':
