@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Control.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="442" lean-forward="true" selection-start-line="442" selection-end-line="442" />
+            <state relative-caret-position="373">
+              <caret line="261" column="74" selection-start-line="261" selection-start-column="74" selection-end-line="261" selection-end-column="74" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -64,10 +64,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-410" />
-    <option name="y" value="5" />
-    <option name="width" value="1940" />
-    <option name="height" value="1050" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1098" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -75,6 +75,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -86,7 +87,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -186,7 +186,8 @@
       <workItem from="1593784793961" duration="3872000" />
       <workItem from="1594043255027" duration="596000" />
       <workItem from="1594111476812" duration="38690000" />
-      <workItem from="1594370333243" duration="9876000" />
+      <workItem from="1594370333243" duration="10583000" />
+      <workItem from="1594630568737" duration="14311000" />
     </task>
     <task id="LOCAL-00001" summary="Changed initialisation of clusters to random floats that add up to 1.0.&#10;Changed M step so that everything doesn't go to 0.0">
       <created>1590493103485</created>
@@ -216,26 +217,42 @@
       <option name="project" value="LOCAL" />
       <updated>1594134385245</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Implemented new version of clustering - cluster 2. Changed the way centroids is initialised to calculate the transition matrix for k randomly generated sequences.">
+      <created>1594391229016</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594391229016</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="125157000" />
+    <option name="totallyTimeSpent" value="140175000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992928" visible="true" weight="0.21581769" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992928" visible="true" weight="0.21849866" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5007072" side_tool="true" weight="0.19235925" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932975" weight="0.47524753" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39886847" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932975" weight="0.36403033" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.5205092" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.33521923" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
@@ -245,8 +262,8 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.3297587" />
-      <window_info active="true" anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="4" side_tool="true" visible="true" weight="0.1575067" />
+      <window_info anchor="right" id="SciView" order="3" sideWeight="0.49865228" weight="0.26226014" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="4" sideWeight="0.5013477" side_tool="true" weight="0.3297587" />
       <window_info anchor="right" id="Database" order="5" />
     </layout>
   </component>
@@ -310,20 +327,21 @@
     <MESSAGE value="Test Commit" />
     <MESSAGE value="Created transition matrix in Python" />
     <MESSAGE value="Calculated optimalK using gap and tested for random data of size(4, 10, &lt;=20)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Calculated optimalK using gap and tested for random data of size(4, 10, &lt;=20)" />
+    <MESSAGE value="Implemented new version of clustering - cluster 2. Changed the way centroids is initialised to calculate the transition matrix for k randomly generated sequences." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented new version of clustering - cluster 2. Changed the way centroids is initialised to calculate the transition matrix for k randomly generated sequences." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Control.py</url>
-          <line>456</line>
-          <option name="timeStamp" value="6" />
+          <line>238</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Control.py</url>
-          <line>447</line>
-          <option name="timeStamp" value="7" />
+          <line>248</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -335,7 +353,7 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Clustering$Control.coverage" NAME="Control Coverage Results" MODIFIED="1594391063845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Clustering$Control.coverage" NAME="Control Coverage Results" MODIFIED="1594655284804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
@@ -385,8 +403,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Control.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="442" lean-forward="true" selection-start-line="442" selection-end-line="442" />
+        <state relative-caret-position="373">
+          <caret line="261" column="74" selection-start-line="261" selection-start-column="74" selection-end-line="261" selection-end-column="74" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
