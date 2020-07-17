@@ -6,18 +6,35 @@ import math
 import jnius_config
 import copy
 jnius_config.set_classpath('C:\\Users\\conta\\eclipse-workspace/BehaviourGraphsRunnable.jar')
-from jnius import autoclass
+from jnius import autoclass,PythonJavaClass,cast,java_method
+
+Integer = autoclass('java.lang.Integer')
 
 def main():
+    '''
+    data values:
+    0 = TEST
+    1 = SQUASH COACHES
+    2 = STROKE PHYSIOTHERAPISTS
+    3 = ALL
+
+    compound values:
+    0 = ONLY PARENT BEHAVIOURS
+    1 = INCLUDE CONCURRENT BEHAVIOURS
+    '''
+    data = 1
+    compound = 1
     '''centroids = [[0.2, 0.3], [0.4, 0.8]]
     clusters = [[[0.21, 0.25], [0.19, 0.35]], [[0.58, 0.67], [0.22, 0.93]]]
     print(inertia(centroids, clusters))'''
 
-    DFromJava = getActionSequences()  # Observed behaviour seqeunces from the Java program which reads in the data.
+    PythonHelper = autoclass('behaviour_graphs.PythonHelper')
+    ph = PythonHelper(data)
 
+    DFromJava = ph.getSequences(data, compound)  # Observed behaviour seqeunces from the Java program which reads in the data
     # following = createTransitionMatrices(D)
 
-    sizeA = getActionSpaceSize(DFromJava)  # Size of the action space
+    sizeA = ph.uniqueElements(DFromJava) + 2  # Size of the action space
     D = [[behaviour for behaviour in sequence] for sequence in DFromJava]  # Convert behaviour sequences to a more python-friendly form
 
     # following = getFollowing()
@@ -35,12 +52,12 @@ def main():
     print(D2)
     print(type(D2))'''
 
-    D = [[1, 1, 1, 1, 2, 1], [1, 1, 2, 1, 1, 1], [3, 4, 3, 3, 3, 3], [3, 3, 3, 3, 3, 4], [1,1,1,2,1,1,1,2,1], [2,1,1,1,2,1,1,1,1,1], [1,1,1,2,1], [1,1,1,1,1,1,1,2,2,1,1,1], [1,1,1,1,2,2,1,1,1,2,1], [3,3,3,4,3,3,3,4,3], [3,3,3,4,3], [4,3,3,3,3,3,4,3,3], [3,3,3,3,4,4,3,3,3,4,3]]
+    '''D = [[1, 1, 1, 1, 2, 1], [1, 1, 2, 1, 1, 1], [3, 4, 3, 3, 3, 3], [3, 3, 3, 3, 3, 4]]  #, [1,1,1,2,1,1,1,2,1], [2,1,1,1,2,1,1,1,1,1], [1,1,1,2,1], [1,1,1,1,1,1,1,2,2,1,1,1], [1,1,1,1,2,2,1,1,1,2,1], [3,3,3,4,3,3,3,4,3], [3,3,3,4,3], [4,3,3,3,3,3,4,3,3], [3,3,3,3,4,4,3,3,3,4,3]]
     sizeA = 6
-    '''following = createTransitionMatrices(D, sizeA)
+    following = createTransitionMatrices(D, sizeA)
     print(following)'''
 
-    '''k, gapdf = optimalK(D, sizeA, nrefs=3, maxClusters=len(D))  # Number of clusters
+    k, gapdf = optimalK(D, sizeA, nrefs=3, maxClusters=len(D))  # Number of clusters
     print('optimal k = ', k)
     plt.plot(gapdf.clusterCount, gapdf.gap, linewidth=3)
     plt.scatter(gapdf[gapdf.clusterCount == k].clusterCount, gapdf[gapdf.clusterCount == k].gap, s=250, c='r')
@@ -48,12 +65,22 @@ def main():
     plt.xlabel('Cluster Count')
     plt.ylabel('Gap Value')
     plt.title('Gap Values by Cluster Count')
-    plt.show()'''
-    k = 2
+    plt.show()
+    '''dispdf = sumofsquarederrors(D, sizeA, maxClusters=15)
+    plt.plot(dispdf.clusterCount, dispdf.errorsWk, linewidth=3, color='red')
+    #plt.plot(dispdf.clusterCount, dispdf.errorsInertia, linewidth=3, color='blue')
+    plt.plot(dispdf.clusterCount, dispdf.expectedLogMean, linewidth=3, color='green')
+    plt.plot(dispdf.clusterCount, dispdf.expectedMeanLog, linewidth=3, color='yellow')
+    plt.grid(True)
+    plt.xlabel('Cluster Count')
+    plt.ylabel('Sum of Squared Error')
+    plt.title('Comparison of Sum of Squared Errors by Cluster Count')
+    plt.show()
+    # k = 2'''
     Z, clusterCentroids, following = cluster2(k, D, sizeA)  # The set of clusters
     print('Z:', Z)
     print('Centroids:', clusterCentroids)
-    # displayGraphs(clusterCentroids)
+    ph.createGraph(clusterCentroids)
     input("Press Enter to continue...")
 
 def getActionSequences():
@@ -67,11 +94,11 @@ def getActionSequences():
     return ph.getSequences()
 
 
-def getActionSpaceSize(D):
+'''def getActionSpaceSize(D, ph):
     # Calculate the size of the action space based on the behaviour sequences given.
     PythonHelper = autoclass('behaviour_graphs.PythonHelper')
-    ph = PythonHelper()
-    return ph.uniqueElements(D) + 2
+    # ph = PythonHelper()
+    return PythonHelper(data).uniqueElements(D) + 2'''
 
 
 def createTransitionMatrices(D, sizeA):
@@ -95,21 +122,49 @@ def createTransitionMatrices(D, sizeA):
         totalOccs[i][sizeA-1] += 1
         newD[i].append(sizeA-1)
 
-    print("totalOccs: ", totalOccs)
+    # print("totalOccs: ", totalOccs)
 
     # Then calculate it as a percentage of total behaviours.
     transitionMatrices = [[[float(0) if totalOccs[i][row] == 0 else count/totalOccs[i][row] for count in countedMatrix[i][row]] for row in range(0, len(countedMatrix[i]))] for i in range(0, len(D))]
-    print(transitionMatrices)
+    # print(transitionMatrices)
 
     totals = [len(sequence) + 2 for sequence in D]  # +2 for start and end
-    print(totals)
+    # print(totals)
 
     for matrix in range(0, len(transitionMatrices)):
         for row in range(0, len(transitionMatrices[matrix])):
             transitionMatrices[matrix][row][0] = totalOccs[matrix][row]/totals[matrix]
-    print(transitionMatrices)
+    # print(transitionMatrices)
 
     return newD, transitionMatrices
+
+
+def sumofsquarederrors(data, sizeA, nrefs=3, maxClusters=15):
+    resultsdf = pd.DataFrame({'clusterCount': [], 'errorsWk': [], 'errorsInertia': [], 'expectedLogMean': [], 'expectedMeanLog': []})
+
+    for gap_index, k in enumerate(range(1, maxClusters)):
+        refDisps = np.zeros(nrefs)
+
+        for i in range(nrefs):
+            randomReference = [np.random.randint(1, high=sizeA - 1,
+                                                 size=np.random.randint(1, max([len(sequence) for sequence in data])))
+                               for i in range(0, len(data))]
+            Z, clusterCentroids, transitionMatrices = cluster2(k, randomReference, sizeA)
+            clusters = createClusterMatrices(Z, transitionMatrices, k)
+
+            refDisp = Wk(clusterCentroids, clusters)
+
+            refDisps[i] = refDisp
+
+        Z, clusterCentroids, transitionMatrices = cluster2(k, data, sizeA)
+        clusters = createClusterMatrices(Z, transitionMatrices, k)
+
+        dispWk = Wk(clusterCentroids, clusters)
+        dispInertia = inertia(clusterCentroids, clusters)
+
+        resultsdf = resultsdf.append({'clusterCount': k, 'errorsWk': np.log(dispWk), 'errorsInertia': np.log(dispInertia), 'expectedLogMean': np.log(np.mean(refDisps)), 'expectedMeanLog': np.mean([np.log(rd) for rd in refDisps])}, ignore_index=True)
+
+    return resultsdf
 
 
 def optimalK(data, sizeA, nrefs=3, maxClusters=15):
@@ -126,7 +181,7 @@ def optimalK(data, sizeA, nrefs=3, maxClusters=15):
     resultsdf = pd.DataFrame({'clusterCount': [], 'gap': []})
 
     for gap_index, k in enumerate(range(1, maxClusters)):
-
+        print('k:', k)
         # Holder for reference dispersion results
         refDisps = np.zeros(nrefs)
 
@@ -137,32 +192,33 @@ def optimalK(data, sizeA, nrefs=3, maxClusters=15):
             randomReference = [np.random.randint(1, high=sizeA - 1,
                                                  size=np.random.randint(1, max([len(sequence) for sequence in data])))
                                for i in range(0, len(data))]
-            print('randomReference', i, ', length =', len(randomReference), ':', randomReference)
+            # print('randomReference', i, ', length =', len(randomReference), ':', randomReference)
 
             # Fit to it using defined clustering algorithm
             Z, clusterCentroids, transitionMatrices = cluster2(k, randomReference, sizeA)
             clusters = createClusterMatrices(Z, transitionMatrices, k)
-            print('clusters for randomReference ', i, ': ', clusters)
-            print('centroids for randomReference', i, ': ', clusterCentroids)
-            print('elements in each cluster: ', [len(c) for c in clusters])
+            # print('clusters for randomReference ', i, ': ', clusters)
+            # print('centroids for randomReference', i, ': ', clusterCentroids)
+            # print('elements in each cluster: ', [len(c) for c in clusters])
 
             refDisp = inertia(clusterCentroids, clusters)
-            print('refDisp for randomReference ', i, ': ', refDisp)
+            # print('refDisp for randomReference ', i, ': ', refDisp)
             refDisps[i] = refDisp
 
         # Fit cluster to original data and create dispersion
         Z, clusterCentroids, transitionMatrices = cluster2(k, data, sizeA)
         clusters = createClusterMatrices(Z, transitionMatrices, k)
-        print('clusters for data, k =', k, ': ', clusters)
-        print('centroids for data, k =', k, ': ', clusterCentroids)
-        print('elements in each cluster:', [len(c) for c in clusters])
+        # print('clusters for data, k =', k, ': ', clusters)
+        # print('centroids for data, k =', k, ': ', clusterCentroids)
+        # print('elements in each cluster:', [len(c) for c in clusters])
 
         origDisp = inertia(clusterCentroids, clusters)
-        print('origDisp for data, k =', k, ': ', origDisp)
+        # print('origDisp for data, k =', k, ': ', origDisp)
 
         # Calculate gap statistic
         gap = np.log(np.mean(refDisps)) - np.log(origDisp)
-        print('gap, k =', k, ': ', gap)
+        # gap = np.mean([np.log(rd) for rd in refDisps]) - np.log(origDisp)
+        # print('gap, k =', k, ': ', gap)
 
         # Assign this loop's gap statistic to gaps
         gaps[gap_index] = gap
@@ -189,6 +245,17 @@ def inertia(centroids, clusters):
 
     return sum(  # for each cluster
         [sum(  # for each point in the cluster
+            [math.pow(np.linalg.norm(np.array(clusters[i][j]) - np.array(centroids[i])), 2) for j in
+             range(0, len(clusters[i]))]  # square the euclidean distance between point and centroid
+        ) for i in range(0, len(centroids))]
+    )
+
+
+def Wk(centroids, clusters):
+    # Calculate sum of squared distance for each cluster.
+
+    return sum(  # for each cluster
+        [(1 / 2*len(clusters[i])) * sum(  # for each point in the cluster
             [math.pow(np.linalg.norm(np.array(clusters[i][j]) - np.array(centroids[i])), 2) for j in
              range(0, len(clusters[i]))]  # square the euclidean distance between point and centroid
         ) for i in range(0, len(centroids))]
@@ -223,7 +290,9 @@ def cluster2(k, origD, sizeA):
             change = 1
 
         # M-step
-        centroids = M_step(Z, k, sizeA, transitionMatrices, centroids)
+            centroids = M_step(Z, k, sizeA, transitionMatrices, centroids, 0)  # Set 0s to 0.005 so that product does not = 0
+        else:
+            centroids = M_step(Z, k, sizeA, transitionMatrices, centroids, 1)  # Set 0s to 0 because we don't need product again
 
     return Z, centroids, transitionMatrices
 
@@ -239,17 +308,18 @@ def E_step(D, centroids, transitionMatrices):
     return newZ
 
 
-def M_step(Z, k, sizeA, transitionMatrices, oldCentroids):
+def M_step(Z, k, sizeA, transitionMatrices, oldCentroids, final):
     groupedMatrices = groupMatrices(Z, transitionMatrices, k)
 
     # Each centroid becomes the average transition matrix of each matrix assigned to that cluster.
-    centroids = [oldCentroids[z] if len(groupedMatrices[z]) == 0 else averageMatrix(groupedMatrices[z], sizeA) for z in
+    centroids = [oldCentroids[z] if len(groupedMatrices[z]) == 0 else averageMatrix(groupedMatrices[z], sizeA, final) for z in
                  range(0, k)]
 
     return centroids
 
 
 def groupMatrices(Z, transitionMatrices, k):
+    # Group the matrices into their repective assigned clusters.
     groupedMatrices = [[] for i in range(0, k)]
 
     for assignment in range(0, len(Z)):
@@ -258,9 +328,11 @@ def groupMatrices(Z, transitionMatrices, k):
     return groupedMatrices
 
 
-def averageMatrix(matrixList, sizeA):
-    averageMatrix = [[np.mean([matrix[row][col] for matrix in matrixList]) for col in range(0, sizeA)] for row in
-                     range(0, sizeA)]
+def averageMatrix(matrixList, sizeA, final):
+    # Calculate the average for each point in the given matrix list.
+    averageMatrix = [[np.mean([matrix[row][col] for matrix in matrixList]) if  # Use mean unless mean==0 or it's the final M step
+                      np.mean([matrix[row][col] for matrix in matrixList]) != 0 or final else 0.005
+                      for col in range(0, sizeA)] for row in range(0, sizeA)]
 
     return averageMatrix
 
