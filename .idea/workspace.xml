@@ -11,6 +11,20 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="Clustering" />
   </component>
@@ -19,11 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Control.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="261" column="74" selection-start-line="261" selection-start-column="74" selection-end-line="261" selection-end-column="74" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="85">
+              <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -46,6 +57,8 @@
       <find>]</find>
       <find>]]</find>
       <find>sizeA</find>
+      <find>print</find>
+      <find>4</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -64,10 +77,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1098" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1940" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -83,6 +96,15 @@
               <item name="Clustering" type="b2602c69:ProjectViewProjectNode" />
               <item name="Clustering" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Clustering" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Clustering" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -92,6 +114,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -187,7 +210,12 @@
       <workItem from="1594043255027" duration="596000" />
       <workItem from="1594111476812" duration="38690000" />
       <workItem from="1594370333243" duration="10583000" />
-      <workItem from="1594630568737" duration="14311000" />
+      <workItem from="1594630568737" duration="49980000" />
+      <workItem from="1595237325921" duration="5292000" />
+      <workItem from="1595494294996" duration="10565000" />
+      <workItem from="1600869567445" duration="275000" />
+      <workItem from="1606495893514" duration="350000" />
+      <workItem from="1606496936181" duration="2579000" />
     </task>
     <task id="LOCAL-00001" summary="Changed initialisation of clusters to random floats that add up to 1.0.&#10;Changed M step so that everything doesn't go to 0.0">
       <created>1590493103485</created>
@@ -224,11 +252,25 @@
       <option name="project" value="LOCAL" />
       <updated>1594391229016</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Reordered methods so the ones I'm using are at the top. Changed initialisation of centroids to random positive numbers instead of random sequences to avoid 0s occurring.">
+      <created>1594715630504</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594715630512</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Can now plot graphs of expected dispersion and actual dispersion for each k.&#10;Clustering properly.">
+      <created>1594997398538</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594997398538</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140175000" />
+    <option name="totallyTimeSpent" value="194905000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -243,12 +285,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992928" visible="true" weight="0.21849866" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4992928" visible="true" weight="0.23190348" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5007072" side_tool="true" weight="0.19235925" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932975" weight="0.36403033" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932975" weight="0.20650637" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5205092" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -259,12 +301,13 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.47524753" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32956153" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32956153" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.32956153" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.49865228" weight="0.26226014" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="4" sideWeight="0.5013477" side_tool="true" weight="0.3297587" />
-      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="SciView" order="3" sideWeight="0.4936351" visible="true" weight="0.1575067" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="4" sideWeight="0.50636494" side_tool="true" visible="true" weight="0.1575067" />
+      <window_info anchor="right" id="Database" order="5" weight="0.3297587" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,19 +371,21 @@
     <MESSAGE value="Created transition matrix in Python" />
     <MESSAGE value="Calculated optimalK using gap and tested for random data of size(4, 10, &lt;=20)" />
     <MESSAGE value="Implemented new version of clustering - cluster 2. Changed the way centroids is initialised to calculate the transition matrix for k randomly generated sequences." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented new version of clustering - cluster 2. Changed the way centroids is initialised to calculate the transition matrix for k randomly generated sequences." />
+    <MESSAGE value="Reordered methods so the ones I'm using are at the top. Changed initialisation of centroids to random positive numbers instead of random sequences to avoid 0s occurring." />
+    <MESSAGE value="Can now plot graphs of expected dispersion and actual dispersion for each k.&#10;Clustering properly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Can now plot graphs of expected dispersion and actual dispersion for each k.&#10;Clustering properly." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Control.py</url>
-          <line>238</line>
+          <line>307</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Control.py</url>
-          <line>248</line>
+          <line>317</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
@@ -353,7 +398,7 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Clustering$Control.coverage" NAME="Control Coverage Results" MODIFIED="1594655284804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Clustering$Control.coverage" NAME="Control Coverage Results" MODIFIED="1595585673602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
@@ -401,13 +446,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Control.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="261" column="74" selection-start-line="261" selection-start-column="74" selection-end-line="261" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="19" />
         </state>
       </provider>
     </entry>

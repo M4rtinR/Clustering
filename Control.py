@@ -22,7 +22,7 @@ def main():
     0 = ONLY PARENT BEHAVIOURS
     1 = INCLUDE CONCURRENT BEHAVIOURS
     '''
-    data = 1
+    data = 3
     compound = 1
     '''centroids = [[0.2, 0.3], [0.4, 0.8]]
     clusters = [[[0.21, 0.25], [0.19, 0.35]], [[0.58, 0.67], [0.22, 0.93]]]
