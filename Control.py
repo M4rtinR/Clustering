@@ -5,19 +5,19 @@ jnius_config.set_classpath('C:\\Users\\conta\\eclipse-workspace/BehaviourGraphs.
 from jnius import autoclass
 
 def main():
-    D = getActionSequences()  # Data set to cluster
+    D = getActionSequences()  # Dataset to cluster
     following = getFollowing()
+    # your action space
     A = {"Start", "Pre-Instruction", "Concurrent Instruction (Positive)", "Concurrent Instruciton (Negative)",
          "Post-Instruction (Positive)", "Post-Instruction (Negative)", "Manual Manipulation", "Questioning",
          "Positive Modelling", "Negative Modelling", "First Name", "Hustle", "Praise", "Scold", "Console",
-         "End"}  # Action space
+         "End"}
     sizeA = len(A)  # Size of the action space
     k = 5  # Number of clusters
     clusters = cluster(k, D, sizeA, following)  # The set of clusters
 
 
 def getActionSequences():
-    # Do something with Java here
     print("getting action sequences")
     PythonHelper = autoclass('behaviour_graphs.PythonHelper')
     ph = PythonHelper()
@@ -28,7 +28,6 @@ def getActionSequences():
 
 
 def getFollowing():
-    # Do something with Java here
     print("getting following behaviours")
     PythonHelper = autoclass('behaviour_graphs.PythonHelper')
     ph = PythonHelper()
@@ -46,71 +45,8 @@ def cluster(k, D, sizeA, following):
 
     # Initialise the set of optimal clusters by randomising each transition matrix
     for i in range(0, k):
-        matrix = [
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()],
-            [random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random(), random.random(), random.random(), random.random(), random.random(),
-             random.random()]]
+        size = 16
+        matrix = [[random.random() for _ in range(size)] for _ in range(size)]
 
         returnClusters.append(matrix)
 
