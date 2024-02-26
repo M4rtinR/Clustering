@@ -6,4 +6,5 @@ The full process is explained further in the paper's below.
 
 [1] Stefanos Nikolaidis, Ramya Ramakrishnan, Keren Gu, and Julie Shah. [n. d.]. Efficient Model Learning from Joint-Action Demonstrations for Human-Robot Collaborative Tasks. In Proceedings of the Tenth Annual ACM/IEEE International Conference on Human-Robot Interaction - HRI ’15 (2015-03). ACM, 189–196. https://dl.acm.org/doi/10.1145/2696454.2696455
 
-[2] XXXX
+[2] Ross, Martin K., Frank Broz, and Lynne Baillie. ‘Observing and Clustering Coaching Behaviours to Inform the Design of a Personalised Robotic Coach’. In Proceedings of the 23rd International Conference on Human-Computer Interaction with Mobile Devices and Services. Virtual (originally Toulouse, France): ACM, 2021. https://doi.org/10.1145/3447526.3472043.
+
